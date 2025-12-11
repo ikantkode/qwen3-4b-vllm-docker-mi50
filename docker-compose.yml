@@ -1,0 +1,19 @@
+services:
+  vllm:
+    image: nalanzeyu/vllm-gfx906
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+    shm_size: 4g
+    ports:
+      - "45000:8000"
+    volumes:
+      - ./model:/model
+    command: >
+      vllm serve /model
+      --host 0.0.0.0
+      --port 8000
+      --max-model-len 8192
+      --gpu-memory-utilization 0.9
